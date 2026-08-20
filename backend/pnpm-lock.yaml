@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@prisma/adapter-better-sqlite3':
-        specifier: ^7.9.1
-        version: 7.9.1
       '@prisma/adapter-pg':
         specifier: ^7.9.1
         version: 7.9.1
@@ -20,9 +17,6 @@ importers:
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
-      better-sqlite3:
-        specifier: ^13.0.3
-        version: 13.0.3
       bullmq:
         specifier: ^5.0.0
         version: 5.81.3
