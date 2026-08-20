@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: onlineshoppj_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: onlineshoppj_backend
+    ports:
+      - "8800:8800"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NODE_ENV=development
+    depends_on:
+      - redis
+    # For development convenience the backend source is mounted into the container.
+    # If you prefer to use the image's built node_modules, remove the volume mount.
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: onlineshoppj_worker
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NODE_ENV=development
+    depends_on:
+      - redis
+    command: [ "npm", "run", "worker" ]
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+volumes:
+  redis-data:

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": [
+    "index.ts",
+    "controllers/**/*.ts",
+    "lib/**/*.ts",
+    "middlewares/**/*.ts",
+    "routes/**/*.ts",
+    "services/**/*.ts",
+    "workers/**/*.ts",
+    "seed/**/*.ts"
+  ]
+}

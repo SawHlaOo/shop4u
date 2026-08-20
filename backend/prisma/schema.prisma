@@ -1,0 +1,271 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  username String @unique
+  password String
+  bio String?
+
+  email String @unique
+  avatar String?
+  role Role @default(USER)
+
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+enum Role{
+  USER
+  ADMIN
+  SELLER
+}
+
+
+
+model Game{
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  image String
+  badge String?
+  logo String
+  
+  sections SectionGame[]
+  productCards ProductCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model App{
+  id Int @id @default(autoincrement())
+  description String?
+  name String
+  image String
+  badge String?
+  logo  String
+
+  sections SectionApp[]
+  productCards ProductCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+
+}
+
+model Powerpoint{
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  image String
+  badge String?
+  logo String
+  
+  sections SectionPowerpoint[]
+  productCards ProductCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Section{
+  id Int @id @default(autoincrement())
+  name String
+  Slug String @unique
+  
+  games SectionGame[]
+  apps  SectionApp[]
+
+  powerpoints SectionPowerpoint[]
+  productCards ProductCard[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+}
+
+model SectionApp{
+  appId Int
+  sectionId Int
+
+
+  app App @relation(fields:[appId],references:[id])
+  section Section @relation(fields:[sectionId],references:[id])
+
+  @@id([appId,sectionId])
+
+
+}
+
+model SectionPowerpoint{
+  powerpointId Int
+  sectionId Int
+
+  powerpoint Powerpoint @relation(fields:[powerpointId],references:[id])
+  section Section @relation(fields:[sectionId],references:[id])
+
+  @@id([powerpointId,sectionId])
+}
+
+
+
+model SectionGame{
+  gameId    Int
+  sectionId Int
+
+  game      Game @relation(fields:[gameId],references:[id])
+  section   Section @relation(fields:[sectionId],references:[id])
+
+  @@id([gameId,sectionId])
+
+}
+
+
+
+model ProductCard{
+  id Int @id @default(autoincrement())
+
+  name String
+  description String?
+  thumbnail String
+  price String
+  badge String?
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gameId Int
+  game Game @relation(fields:[gameId],references:[id])
+
+  appId Int
+  app App @relation(fields:[appId],references:[id])
+
+  powerpointId Int
+  powerpoint Powerpoint @relation(fields:[powerpointId],references:[id])
+
+  sectionId Int?
+  section Section? @relation(fields:[sectionId], references:[id])
+
+  orders Order[]
+
+  @@index([createdAt])
+  @@index([gameId])
+  @@index([appId])
+  @@index([powerpointId])
+  @@index([sectionId])
+}
+
+model Order{
+
+  id Int @id @default(autoincrement())
+  
+  amount Int
+  quantity Int
+  productId Int
+  productCard ProductCard @relation(fields:[productId],references:[id])
+
+  paymentId Int
+  payment Payment @relation(fields:[paymentId],references:[id])
+ 
+
+
+  @@index([productId])
+  @@index([paymentId])
+}
+
+model ProductInfo{
+
+  id Int @id @default(autoincrement())
+  userId Int?
+  zoneId Int?
+  email String?
+
+  amount Int
+  quantity Int
+  
+  paymentId Int
+  payment Payment @relation(fields:[paymentId],references:[id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([email])
+}
+
+
+model Payment{
+   
+  id Int @id @default(autoincrement())
+  isActive Boolean
+  name String
+  logo String?
+  image String
+  url String?
+  
+  userId Int
+  user User @relation(fields:[userId],references:[id])
+
+  orders Order[]
+  productInfoes ProductInfo[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+
+model FeatureFlag{
+   
+   id Int @id @default(autoincrement())
+   key String @unique
+   enabled Boolean @default(false)
+   
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+}
+
+model SlideShow{
+
+  id Int @id @default(autoincrement())
+  image String
+  enabled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+model Description{
+   
+   id Int @id @default(autoincrement())
+   content String
+
+   enabled Boolean @default(false)
+
+
+}
+
+model DescriptionCard{
+  id Int @id @default(autoincrement())
+
+  heading String
+  content String
+  image String?
+  url  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+}

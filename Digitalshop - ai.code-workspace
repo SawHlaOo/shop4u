@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../Digitalshop - ai"
+		},
+		{
+			"path": "../Backend - Copy"
+		}
+	],
+	"settings": {
+		"chat.disableAIFeatures": false
+	}
+}

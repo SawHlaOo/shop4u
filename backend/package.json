@@ -1,0 +1,42 @@
+{
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch index.ts",
+        "start": "tsx index.ts",
+        "build": "prisma generate",
+        "postinstall": "prisma generate",
+        "typecheck": "tsc --noEmit",
+        "worker": "tsx workers/jobWorker.ts",
+        "fresh": "prisma migrate reset --force && tsx seed/main.ts",
+        "db:push": "prisma db push --schema prisma/schema.prisma",
+        "db:seed": "tsx seed/main.ts",
+        "generate": "prisma generate --schema prisma/schema.prisma"
+    },
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.9.1",
+        "@prisma/client": "^7.8.0",
+        "bcrypt": "^6.0.0",
+        "bullmq": "^5.0.0",
+        "cors": "^2.8.6",
+        "dotenv": "^17.4.2",
+        "express": "^5.2.1",
+        "express-rate-limit": "^7.1.0",
+        "helmet": "^8.0.0",
+        "ioredis": "^5.0.0",
+        "jsonwebtoken": "^9.0.3",
+        "pg": "^8.11.3",
+        "swagger-ui-express": "^5.0.1",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^10.4.0",
+        "@types/bcrypt": "^6.0.0",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/jsonwebtoken": "^9.0.10",
+        "@types/node": "^25.9.2",
+        "prisma": "^7.8.0",
+        "tsx": "^4.22.4",
+        "typescript": "^5.9.3"
+    }
+}
