@@ -1,5 +1,5 @@
-import { productsService } from "../services/productsService";
-import { createProductSchema, editProductSchema } from "../lib/dtos_products";
+import { productsService } from "../services/productsService.js";
+import { createProductSchema, editProductSchema } from "../lib/dtos_products.js";
 
 export const productsController = {
   listGames: async (_req: any, res: any) => {

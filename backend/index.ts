@@ -3,12 +3,12 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
-import { isDatabaseConfigured, prisma } from "./lib/prisma";
-import { router as usersRouter } from "./routes/users";
-import { router as productsRouter } from "./routes/products";
-import { router as featureFlagsRouter } from "./routes/featureFlags";
-import { apiLimiter } from "./middlewares/rateLimit";
-import { errorHandler } from "./middlewares/errorHandler";
+import { isDatabaseConfigured, prisma } from "./lib/prisma.js";
+import { router as usersRouter } from "./routes/users.js";
+import { router as productsRouter } from "./routes/products.js";
+import { router as featureFlagsRouter } from "./routes/featureFlags.js";
+import { apiLimiter } from "./middlewares/rateLimit.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 const port = Number(process.env.PORT || 8800);

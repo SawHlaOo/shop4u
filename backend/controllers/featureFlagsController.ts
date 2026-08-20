@@ -1,5 +1,5 @@
-import { featureFlagsService } from "../services/featureFlagsService";
-import { flagSchema } from "../lib/dtos_featureFlags";
+import { featureFlagsService } from "../services/featureFlagsService.js";
+import { flagSchema } from "../lib/dtos_featureFlags.js";
 
 export const featureFlagsController = {
   listFlags: async (_req: any, res: any) => {

@@ -1,9 +1,9 @@
 import express from "express";
-import { auth } from "../middlewares/auth";
-import { usersController } from "../controllers/usersController";
-import { validateBody } from "../middlewares/validate";
-import { loginSchema, registrationSchema } from "../lib/dtos_users";
-import { deprecatedHandler } from "../lib/compat";
+import { auth } from "../middlewares/auth.js";
+import { usersController } from "../controllers/usersController.js";
+import { validateBody } from "../middlewares/validate.js";
+import { loginSchema, registrationSchema } from "../lib/dtos_users.js";
+import { deprecatedHandler } from "../lib/compat.js";
 
 export const router = express.Router();
 

@@ -1,9 +1,9 @@
 import express from "express";
-import { auth } from "../middlewares/auth";
-import { productsController } from "../controllers/productsController";
-import { validateBody } from "../middlewares/validate";
-import { createProductSchema, editProductSchema } from "../lib/dtos_products";
-import { deprecatedHandler } from "../lib/compat";
+import { auth } from "../middlewares/auth.js";
+import { productsController } from "../controllers/productsController.js";
+import { validateBody } from "../middlewares/validate.js";
+import { createProductSchema, editProductSchema } from "../lib/dtos_products.js";
+import { deprecatedHandler } from "../lib/compat.js";
 
 export const router = express.Router();
 

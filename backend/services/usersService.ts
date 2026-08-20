@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../lib/prisma.js";
 
 const sanitizeUser = (user: Record<string, unknown>) => {
   const { password, ...rest } = user;

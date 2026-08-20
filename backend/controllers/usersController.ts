@@ -1,5 +1,5 @@
-import { usersService } from "../services/usersService";
-import { loginSchema, registrationSchema } from "../lib/dtos_users";
+import { usersService } from "../services/usersService.js";
+import { loginSchema, registrationSchema } from "../lib/dtos_users.js";
 
 export const usersController = {
   verify: async (_req: any, res: any) => {

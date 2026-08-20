@@ -1,8 +1,8 @@
 import express from "express";
-import { auth } from "../middlewares/auth";
-import { featureFlagsController } from "../controllers/featureFlagsController";
-import { validateBody } from "../middlewares/validate";
-import { flagSchema } from "../lib/dtos_featureFlags";
+import { auth } from "../middlewares/auth.js";
+import { featureFlagsController } from "../controllers/featureFlagsController.js";
+import { validateBody } from "../middlewares/validate.js";
+import { flagSchema } from "../lib/dtos_featureFlags.js";
 
 export const router = express.Router();
 
