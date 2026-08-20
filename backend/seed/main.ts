@@ -5,13 +5,6 @@ async function main() {
   console.log("Seeding users...");
   const users: Prisma.UserCreateInput[] = [
     {
-      name: "Admin User",
-      username: "admin",
-      email: "admin@example.com",
-      role: "ADMIN",
-      password: await bcrypt.hash("admin123", 10),
-    },
-    {
       name: "Demo User",
       username: "demo",
       email: "demo@example.com",

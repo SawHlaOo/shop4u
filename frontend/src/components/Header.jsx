@@ -16,7 +16,7 @@ export default function Header() {
           <MenuIcon />
         </IconButton>
         <Typography component="button" type="button" variant="h6" onClick={() => navigate('/')} sx={{ flexGrow: 1, cursor: 'pointer', textAlign: 'left', border: 0, bgcolor: 'transparent', color: 'inherit', font: 'inherit' }}>
-          Digitalshop
+          ShopInMgSaw
         </Typography>
         <Stack direction="row" spacing={1} alignItems="center">
           {user ? (

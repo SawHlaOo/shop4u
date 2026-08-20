@@ -10,6 +10,7 @@
         "fresh": "prisma migrate reset --force && tsx seed/main.ts",
         "db:push": "prisma db push --schema prisma/schema.prisma",
         "db:seed": "tsx seed/main.ts",
+        "admin:bootstrap": "tsx scripts/bootstrapAdmin.ts",
         "generate": "prisma generate --schema prisma/schema.prisma"
     },
     "dependencies": {

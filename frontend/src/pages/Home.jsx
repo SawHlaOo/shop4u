@@ -1,5 +1,6 @@
 import { Alert, Box, CircularProgress, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import { productApi } from '../api/productApi';
 import ProductCard from '../components/ProductCard';
@@ -31,6 +32,8 @@ function CatalogSection({ title, type, items, isLoading, search }) {
 
 export default function Home() {
   const [search, setSearch] = useState('');
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   const games = useQuery({ queryKey: ['games'], queryFn: productApi.listGames, select: (response) => response?.data ?? [] });
   const apps = useQuery({ queryKey: ['apps'], queryFn: productApi.listApps, select: (response) => response?.data ?? [] });
   const powerpoints = useQuery({ queryKey: ['powerpoints'], queryFn: productApi.listPowerpoints, select: (response) => response?.data ?? [] });
@@ -38,11 +41,11 @@ export default function Home() {
 
   return (
     <Container maxWidth="xl" sx={{ py: { xs: 3, md: 5 } }}>
-      <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, border: '1px solid', borderColor: 'divider', background: 'linear-gradient(135deg, #eff6ff, #f5f3ff)' }}>
+      <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, border: '1px solid', borderColor: 'divider', background: isDarkMode ? 'linear-gradient(135deg, #172554, #1e293b)' : 'linear-gradient(135deg, #eff6ff, #f5f3ff)', color: isDarkMode ? '#f8fafc' : 'text.primary' }}>
         <Stack spacing={2} maxWidth={720}>
-          <Typography component="h1" variant="h3" fontWeight={800}>Discover your next digital experience</Typography>
-          <Typography color="text.secondary">Browse games, apps, and presentation templates from one reliable catalog.</Typography>
-          <TextField label="Search the catalog" value={search} onChange={(event) => setSearch(event.target.value)} fullWidth inputProps={{ 'aria-label': 'Search the catalog' }} />
+          <Typography component="h1" variant="h3" fontWeight={800}>hey! discover your needs </Typography>
+          <Typography sx={{ color: isDarkMode ? '#dbeafe' : 'text.secondary' }}>We sell games, apps, and presentation templates based on trust and quality.</Typography>
+          <TextField label="Search here" value={search} onChange={(event) => setSearch(event.target.value)} fullWidth inputProps={{ 'aria-label': 'Search here' }} sx={isDarkMode ? { '& .MuiInputLabel-root': { color: '#dbeafe' }, '& .MuiInputLabel-root.Mui-focused': { color: '#93c5fd' }, '& .MuiOutlinedInput-root': { color: '#f8fafc', '& fieldset': { borderColor: 'rgba(219, 234, 254, 0.45)' }, '&:hover fieldset': { borderColor: '#bfdbfe' }, '&.Mui-focused fieldset': { borderColor: '#93c5fd' } } } : undefined} />
         </Stack>
       </Paper>
 

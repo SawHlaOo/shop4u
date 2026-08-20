@@ -24,7 +24,17 @@ export default function AppProvider() {
   });
 
   const theme = useMemo(() => createTheme({
-    palette: { mode, primary: { main: '#2563eb' }, background: { default: mode === 'dark' ? '#111827' : '#f8fafc' } },
+    palette: mode === 'dark' ? {
+      mode,
+      primary: { main: '#60a5fa' },
+      background: { default: '#0b1220', paper: '#121c2e' },
+      text: { primary: '#f8fafc', secondary: '#b8c4d6' },
+      divider: 'rgba(148, 163, 184, 0.2)',
+    } : {
+      mode,
+      primary: { main: '#2563eb' },
+      background: { default: '#f8fafc', paper: '#ffffff' },
+    },
     shape: { borderRadius: 12 },
     typography: { fontFamily: 'Roboto, Arial, sans-serif' },
   }), [mode]);
