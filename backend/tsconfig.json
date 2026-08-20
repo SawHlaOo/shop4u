@@ -16,6 +16,7 @@
     "routes/**/*.ts",
     "services/**/*.ts",
     "workers/**/*.ts",
-    "seed/**/*.ts"
+    "seed/**/*.ts",
+    "types/**/*.d.ts"
   ]
 }
