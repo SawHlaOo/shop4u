@@ -1,15 +1,20 @@
-import { Alert, Box, CircularProgress, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Container, Grid, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { useQuery } from '@tanstack/react-query';
 import { productApi } from '../api/productApi';
 import ProductCard from '../components/ProductCard';
+import { useFeatureFlag } from '../hooks/useFeatureFlag';
 
-function CatalogSection({ title, type, items, isLoading, search }) {
+function CatalogSection({ title, type, items, isLoading, search, filter }) {
   const visibleItems = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return term ? items.filter((item) => item.name?.toLowerCase().includes(term)) : items;
-  }, [items, search]);
+    return items.filter((item) => {
+      const matchesFilter = !filter || (filter === 'new_arrivals' ? ['new', 'new arrivals'].includes(item.badge?.toLowerCase()) : item.badge?.toLowerCase() === filter);
+      const matchesSearch = !term || item.name?.toLowerCase().includes(term);
+      return matchesFilter && matchesSearch;
+    });
+  }, [items, search, filter]);
 
   return (
     <Box component="section" sx={{ mt: 5 }}>
@@ -32,8 +37,12 @@ function CatalogSection({ title, type, items, isLoading, search }) {
 
 export default function Home() {
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('');
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const promotions = useFeatureFlag('promotions');
+  const popular = useFeatureFlag('popular');
+  const newArrivals = useFeatureFlag('new_arrivals');
   const games = useQuery({ queryKey: ['games'], queryFn: productApi.listGames, select: (response) => response?.data ?? [] });
   const apps = useQuery({ queryKey: ['apps'], queryFn: productApi.listApps, select: (response) => response?.data ?? [] });
   const powerpoints = useQuery({ queryKey: ['powerpoints'], queryFn: productApi.listPowerpoints, select: (response) => response?.data ?? [] });
@@ -49,10 +58,16 @@ export default function Home() {
         </Stack>
       </Paper>
 
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 3 }}>
+        {promotions.data !== false ? <Button variant={filter === 'promotions' ? 'contained' : 'outlined'} onClick={() => setFilter(filter === 'promotions' ? '' : 'promotions')}>Promotions</Button> : null}
+        {popular.data !== false ? <Button variant={filter === 'popular' ? 'contained' : 'outlined'} onClick={() => setFilter(filter === 'popular' ? '' : 'popular')}>Popular</Button> : null}
+        {newArrivals.data !== false ? <Button variant={filter === 'new_arrivals' ? 'contained' : 'outlined'} onClick={() => setFilter(filter === 'new_arrivals' ? '' : 'new_arrivals')}>New arrivals</Button> : null}
+      </Stack>
+
       {error ? <Alert severity="error" sx={{ mt: 3 }}>{error.message || 'Unable to load the catalog right now. Please try again shortly.'}</Alert> : null}
-      <CatalogSection title="Games" type="game" items={games.data || []} isLoading={games.isLoading} search={search} />
-      <CatalogSection title="Apps" type="app" items={apps.data || []} isLoading={apps.isLoading} search={search} />
-      <CatalogSection title="Presentation templates" type="powerpoint" items={powerpoints.data || []} isLoading={powerpoints.isLoading} search={search} />
+      <CatalogSection title="Games" type="game" items={games.data || []} isLoading={games.isLoading} search={search} filter={filter} />
+      <CatalogSection title="Apps" type="app" items={apps.data || []} isLoading={apps.isLoading} search={search} filter={filter} />
+      <CatalogSection title="Presentation templates" type="powerpoint" items={powerpoints.data || []} isLoading={powerpoints.isLoading} search={search} filter={filter} />
     </Container>
   );
 }

@@ -33,7 +33,9 @@ async function main() {
 
   for (const flag of [
     { key: "promotions", enabled: true },
-    { key: "new_homepage", enabled: true }
+    { key: "new_homepage", enabled: true },
+    { key: "popular", enabled: true },
+    { key: "new_arrivals", enabled: true }
   ]) {
     const existingFlag = await prisma.featureFlag.findUnique({ where: { key: flag.key } });
     if (!existingFlag) {
