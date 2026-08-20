@@ -1,13 +1,8 @@
 import { prisma } from "../lib/prisma";
-import { deleteCachedKey, getCachedJson } from "../lib/redis";
-
-const cacheKey = "feature-flags:all";
 
 export const featureFlagsService = {
   async listFlags() {
-    return getCachedJson(cacheKey, async () => {
-      return prisma.featureFlag.findMany({ orderBy: { createdAt: "desc" } });
-    }, 120);
+    return prisma.featureFlag.findMany({ orderBy: { createdAt: "desc" } });
   },
 
   async getFlag(key: string) {
@@ -22,7 +17,6 @@ export const featureFlagsService = {
       },
     });
 
-    await deleteCachedKey(cacheKey);
     return flag;
   },
 
@@ -32,12 +26,10 @@ export const featureFlagsService = {
       data: input,
     });
 
-    await deleteCachedKey(cacheKey);
     return flag;
   },
 
   async deleteFlag(key: string) {
     await prisma.featureFlag.delete({ where: { key } });
-    await deleteCachedKey(cacheKey);
   },
 };

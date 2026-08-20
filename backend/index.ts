@@ -3,7 +3,6 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import swaggerUi from "swagger-ui-express";
-import { connectRedis, getCachedJson, disconnectRedis } from "./lib/redis";
 import { isDatabaseConfigured, prisma } from "./lib/prisma";
 import { router as usersRouter } from "./routes/users";
 import { router as productsRouter } from "./routes/products";
@@ -18,15 +17,6 @@ const port = Number(process.env.PORT || 8800);
 // the visitor's IP instead of the proxy's shared IP address.
 if (process.env.VERCEL) {
   app.set("trust proxy", 1);
-}
-
-// Only attempt to connect to Redis when an explicit REDIS_URL or REDIS_HOST is provided.
-// This makes Redis optional in development (prevents repeated ECONNREFUSED logs).
-if (process.env.REDIS_URL || process.env.REDIS_HOST) {
-  // connectRedis already catches and logs; call it asynchronously
-  connectRedis().catch(() => {});
-} else {
-  console.log('[redis] skipped: REDIS_URL / REDIS_HOST not set');
 }
 
 const openApiDocument = {
@@ -735,17 +725,6 @@ app.get('/ready', async (_req, res) => {
     // simple DB check
     await prisma.$queryRaw`SELECT 1`;
 
-    // optional Redis check: treat missing REDIS_URL as ok in dev
-    if (process.env.REDIS_URL) {
-      // redis.status is checked inside getCachedJson; attempt a cheap cache operation
-      try {
-        await getCachedJson('__health__', async () => ({ ok: true }), 1);
-      } catch (e) {
-        console.warn('[ready] redis check failed', e);
-        return res.status(503).json({ ready: false, error: 'redis unavailable' });
-      }
-    }
-
     return res.status(200).json({ ready: true });
   } catch (err) {
     console.error('[ready] db check failed', err);
@@ -772,13 +751,6 @@ if (!process.env.VERCEL) {
     console.log(`Received ${signal}, shutting down...`);
     try {
       await prisma.$disconnect();
-      if (process.env.REDIS_URL) {
-        try {
-          await disconnectRedis();
-        } catch (e) {
-          console.warn('[shutdown] redis disconnect failed', e);
-        }
-      }
       server.close(() => {
         console.log('HTTP server closed');
         process.exit(0);

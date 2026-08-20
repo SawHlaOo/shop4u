@@ -38,22 +38,6 @@ export const usersController = {
       return res.status(409).json({ success: false, error: "username or email already exists" });
     }
 
-    // Queues require Redis and a persistent worker, neither of which is
-    // available by default on Vercel. Do not open a Redis connection unless it
-    // was explicitly configured for this deployment.
-    if (process.env.REDIS_URL || process.env.REDIS_HOST) {
-      try {
-        const { appQueue } = await import("../lib/queue");
-        await appQueue.add("sendWelcomeEmail", {
-          userId: result.user.id,
-          email: result.user.email,
-          name: result.user.name,
-        });
-      } catch (err) {
-        console.warn('[jobs] enqueue failed:', err instanceof Error ? err.message : String(err));
-      }
-    }
-
     return res.status(201).json({ success: true, user: result.user, token: result.token });
   },
 
