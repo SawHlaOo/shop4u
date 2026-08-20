@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider, useLocation } from 'react-router';
 import { lazy, Suspense } from 'react';
 import { Box, CircularProgress } from '@mui/material';
 import App from './App';
@@ -12,12 +12,17 @@ const ProductCardDetail = lazy(() => import('./pages/ProductCardDetail'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Register = lazy(() => import('./pages/Register'));
 
-function page(Component) {
+function page(Component, key) {
   return (
     <Suspense fallback={<Box display="flex" justifyContent="center" py={8}><CircularProgress aria-label="Loading page" /></Box>}>
-      <Component />
+      <Component key={key} />
     </Suspense>
   );
+}
+
+function HomeRoute() {
+  const location = useLocation();
+  return page(Home, location.key);
 }
 
 const router = createBrowserRouter([
@@ -26,7 +31,7 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: page(Home) },
+      { index: true, element: <HomeRoute /> },
       { path: 'login', element: page(Login) },
       { path: 'register', element: page(Register) },
       { path: 'product/:type/:id', element: page(ProductCardDetail) },

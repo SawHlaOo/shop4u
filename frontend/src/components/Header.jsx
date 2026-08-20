@@ -15,7 +15,7 @@ export default function Header() {
         <IconButton color="inherit" onClick={() => setOpenDrawer(true)} sx={{ mr: 1 }}>
           <MenuIcon />
         </IconButton>
-        <Typography component="button" type="button" variant="h6" onClick={() => navigate('/')} sx={{ flexGrow: 1, cursor: 'pointer', textAlign: 'left', border: 0, bgcolor: 'transparent', color: 'inherit', font: 'inherit' }}>
+        <Typography component="button" type="button" variant="h6" onClick={() => navigate('/', { state: { resetHome: true } })} sx={{ flexGrow: 1, cursor: 'pointer', textAlign: 'left', border: 0, bgcolor: 'transparent', color: 'inherit', font: 'inherit' }}>
           ShopInMgSaw
         </Typography>
         <Stack direction="row" spacing={1} alignItems="center">
