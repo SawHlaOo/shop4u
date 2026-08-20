@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "tsx watch index.ts",
         "start": "tsx index.ts",
-        "build": "prisma generate",
-        "postinstall": "prisma generate",
+        "build": "prisma generate && node scripts/fix-prisma-extensions.mjs",
+        "postinstall": "prisma generate && node scripts/fix-prisma-extensions.mjs",
         "typecheck": "tsc --noEmit",
         "worker": "tsx workers/jobWorker.ts",
         "fresh": "prisma migrate reset --force && tsx seed/main.ts",
