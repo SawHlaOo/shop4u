@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import * as swaggerUi from "swagger-ui-express";
+import swaggerUi from "swagger-ui-express";
 import { connectRedis, getCachedJson, disconnectRedis } from "./lib/redis";
 import { isDatabaseConfigured, prisma } from "./lib/prisma";
 import { router as usersRouter } from "./routes/users";
