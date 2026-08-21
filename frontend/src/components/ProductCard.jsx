@@ -19,7 +19,7 @@ export default function ProductCard({ item, type }) {
           {item?.description || 'Explore this item and see its details.'}
         </Typography>
         <Button component="a" href={TELEGRAM_URL} target="_blank" rel="noopener noreferrer" variant="contained" sx={{ alignSelf: 'flex-start', mt: 'auto' }}>
-          Go to Telegram
+          Go Telegram to buy
         </Button>
       </CardContent>
     </Card>
